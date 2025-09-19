@@ -17,15 +17,32 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import torch
 import torch.nn as nn
-from rdkit import Chem
-from rdkit.Chem import AllChem, Descriptors, Crippen, Draw
-from rdkit.Chem.Draw import rdMolDraw2D
 import base64
 from io import BytesIO
 import os
 import sys
 import warnings
 warnings.filterwarnings('ignore')
+
+# Handle RDKit imports with fallback for deployment issues
+try:
+    from rdkit import Chem
+    from rdkit.Chem import AllChem, Descriptors, Crippen
+    RDKIT_AVAILABLE = True
+    
+    # Try to import drawing functionality
+    try:
+        from rdkit.Chem import Draw
+        from rdkit.Chem.Draw import rdMolDraw2D
+        RDKIT_DRAW_AVAILABLE = True
+    except ImportError as e:
+        st.warning("RDKit drawing functionality not available. Molecular structures will not be displayed.")
+        RDKIT_DRAW_AVAILABLE = False
+        
+except ImportError as e:
+    st.error("RDKit not available. Some functionality will be limited.")
+    RDKIT_AVAILABLE = False
+    RDKIT_DRAW_AVAILABLE = False
 
 # Add utils to path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'utils'))
@@ -95,6 +112,9 @@ st.markdown("""
 
 def render_mol_structure(smiles, size=(300, 300)):
     """Render molecular structure from SMILES"""
+    if not RDKIT_AVAILABLE or not RDKIT_DRAW_AVAILABLE:
+        return None
+        
     try:
         mol = Chem.MolFromSmiles(smiles)
         if mol is None:
@@ -108,7 +128,7 @@ def render_mol_structure(smiles, size=(300, 300)):
         img_base64 = base64.b64encode(img_data).decode()
         return f"data:image/png;base64,{img_base64}"
     except Exception as e:
-        st.error(f"Error rendering molecule: {e}")
+        # Don't show error in deployment, just return None
         return None
 
 def main():
@@ -512,10 +532,14 @@ def render_predictor_page():
         with st.spinner("Predicting properties..."):
             try:
                 # Validate SMILES
-                mol = Chem.MolFromSmiles(smiles_input)
-                if mol is None:
-                    st.error("❌ Invalid SMILES string. Please check your input.")
-                    return
+                if RDKIT_AVAILABLE:
+                    mol = Chem.MolFromSmiles(smiles_input)
+                    if mol is None:
+                        st.error("❌ Invalid SMILES string. Please check your input.")
+                        return
+                else:
+                    st.warning("⚠️ RDKit not available - SMILES validation disabled")
+                    mol = None
                 
                 # Display molecular structure
                 st.markdown("### 🧬 Molecular Structure")
@@ -594,21 +618,24 @@ def render_predictor_page():
                 st.markdown("### 🔬 Additional Properties")
                 
                 # Calculate additional RDKit descriptors
-                mw = Descriptors.MolWt(mol)
-                tpsa = Descriptors.TPSA(mol)
-                hbd = Descriptors.NumHDonors(mol)
-                hba = Descriptors.NumHAcceptors(mol)
-                
-                col1, col2, col3, col4 = st.columns(4)
-                
-                with col1:
-                    st.metric("Molecular Weight", f"{mw:.2f} g/mol")
-                with col2:
-                    st.metric("TPSA", f"{tpsa:.2f} Ų")
-                with col3:
-                    st.metric("H-Bond Donors", int(hbd))
-                with col4:
-                    st.metric("H-Bond Acceptors", int(hba))
+                if RDKIT_AVAILABLE and mol is not None:
+                    mw = Descriptors.MolWt(mol)
+                    tpsa = Descriptors.TPSA(mol)
+                    hbd = Descriptors.NumHDonors(mol)
+                    hba = Descriptors.NumHAcceptors(mol)
+                    
+                    col1, col2, col3, col4 = st.columns(4)
+                    
+                    with col1:
+                        st.metric("Molecular Weight", f"{mw:.2f} g/mol")
+                    with col2:
+                        st.metric("TPSA", f"{tpsa:.2f} Ų")
+                    with col3:
+                        st.metric("H-Bond Donors", int(hbd))
+                    with col4:
+                        st.metric("H-Bond Acceptors", int(hba))
+                else:
+                    st.info("Additional molecular properties require RDKit")
                 
                 # Property interpretation
                 st.markdown("### 📝 Property Interpretation")
