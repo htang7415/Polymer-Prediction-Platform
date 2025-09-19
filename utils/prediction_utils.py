@@ -346,7 +346,7 @@ class PolymerPredictor:
                 return float('nan'), float('nan')
             
             # Return prediction with zero uncertainty (single model)
-            return round(float(prediction), 3), 0.0
+            return round(float(prediction + 273), 3), 0.0
             
         except Exception as e:
             print(f"Error in Tg prediction: {e}")
