@@ -65,58 +65,111 @@ st.set_page_config(
 # High-tech custom CSS styling
 st.markdown("""
 <style>
-    /* Professional global theme with better background */
+    /* Modern light theme inspired by big tech companies */
     .main.css-1d391kg {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
         min-height: 100vh;
+        position: relative;
     }
     
-    /* Enhanced headers for dark background */
+    /* Subtle tech grid pattern overlay */
+    .main.css-1d391kg::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+        background-size: 40px 40px;
+        pointer-events: none;
+        z-index: 0;
+    }
+    
+    /* Modern headers inspired by big tech */
     .main-header {
-        font-size: 3rem;
-        color: #e2e8f0;
+        font-size: 3.5rem;
+        color: #0f172a;
         text-align: center;
         margin-bottom: 2rem;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        font-family: 'Inter', sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
         font-weight: 700;
+        letter-spacing: -0.02em;
     }
     
     .sub-header {
-        font-size: 2rem;
-        color: #e2e8f0;
+        font-size: 2.2rem;
+        color: #1e293b;
         margin: 1.5rem 0;
-        border-bottom: 3px solid transparent;
-        background: linear-gradient(90deg, #f59e0b, #ec4899);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
         padding-bottom: 0.5rem;
-        font-weight: 800;
-        letter-spacing: 1px;
-        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
     }
     
-    /* Professional metric cards with vibrant colors */
+    /* Modern metric cards inspired by Google/Microsoft */
     .metric-card {
-        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-        color: #f8fafc;
-        padding: 2rem;
-        border-radius: 18px;
-        margin: 1.2rem 0;
-        box-shadow: 0 12px 35px rgba(79, 70, 229, 0.4);
-        border: 1px solid rgba(255,255,255,0.2);
-        backdrop-filter: blur(20px);
+        background: #ffffff;
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        color: #0f172a;
+        padding: 1.8rem;
+        border-radius: 12px;
+        margin: 1rem 0;
+        box-shadow: 
+            0 1px 3px rgba(0, 0, 0, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.06);
         position: relative;
-        overflow: hidden;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        font-family: 'Inter', sans-serif;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+    }
+    
+    .metric-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+        transition: left 0.6s;
+    }
+    
+    .metric-card:hover::before {
+        left: 100%;
     }
     
     .metric-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 50px rgba(79, 70, 229, 0.5);
-        border-color: rgba(245, 158, 11, 0.4);
+        transform: translateY(-2px);
+        box-shadow: 
+            0 4px 12px rgba(0, 0, 0, 0.15),
+            0 2px 4px rgba(0, 0, 0, 0.1);
+        border-color: rgba(59, 130, 246, 0.3);
+    }
+    
+    .metric-card h3 {
+        color: #64748b;
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+    }
+    
+    .metric-card h2 {
+        color: #0f172a;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0.5rem 0;
+        letter-spacing: -0.02em;
+    }
+    
+    .metric-card p {
+        color: #475569;
+        font-size: 1rem;
+        margin: 0;
+        font-weight: 400;
     }
     
     .metric-card::before {
@@ -147,81 +200,130 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(79, 172, 254, 0.1);
     }
     
-    /* Vibrant professional buttons */
+    /* Modern buttons inspired by Google/Microsoft */
     .stButton > button {
-        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-        color: #1e293b;
+        background: #2563eb;
+        color: #ffffff;
         border: none;
-        padding: 0.9rem 2.5rem;
-        border-radius: 14px;
-        font-family: 'Inter', sans-serif;
-        font-weight: 700;
-        font-size: 1.05rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
-        letter-spacing: 0.5px;
-        border: 1px solid rgba(245, 158, 11, 0.4);
-        text-transform: uppercase;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+        font-weight: 500;
+        font-size: 1.1rem;
+        transition: all 0.2s ease;
+        box-shadow: 
+            0 1px 3px rgba(0, 0, 0, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.06);
+        letter-spacing: -0.01em;
     }
     
     .stButton > button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 30px rgba(245, 158, 11, 0.5);
-        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-        filter: brightness(1.1);
+        background: #1d4ed8;
+        transform: translateY(-1px);
+        box-shadow: 
+            0 4px 12px rgba(0, 0, 0, 0.15),
+            0 2px 4px rgba(0, 0, 0, 0.1);
     }
     
     .stButton > button:active {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        background: #1e40af;
+        transform: translateY(0);
+        box-shadow: 
+            0 1px 3px rgba(0, 0, 0, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.06);
     }
     
-    /* Dark theme form elements */
+    /* Modern form elements inspired by big tech */
     .stSelectbox > div > div {
-        background: rgba(30, 41, 59, 0.8);
-        border: 1px solid rgba(245, 158, 11, 0.3);
-        border-radius: 10px;
-        backdrop-filter: blur(15px);
-        transition: all 0.3s ease;
-        font-family: 'Inter', sans-serif;
-        color: #e2e8f0;
+        background: #ffffff;
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+        color: #0f172a;
+        box-shadow: 
+            0 1px 3px rgba(0, 0, 0, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.06);
     }
     
     .stSelectbox > div > div:focus-within {
-        border-color: #f59e0b;
-        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+        border-color: #2563eb;
+        box-shadow: 
+            0 0 0 3px rgba(37, 99, 235, 0.1),
+            0 1px 3px rgba(0, 0, 0, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.06);
     }
     
     .stTextInput > div > div {
-        background: rgba(30, 41, 59, 0.8);
-        border: 1px solid rgba(245, 158, 11, 0.3);
-        border-radius: 10px;
-        backdrop-filter: blur(15px);
-        transition: all 0.3s ease;
-        font-family: 'Inter', sans-serif;
-        color: #e2e8f0;
+        background: #ffffff;
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+        color: #0f172a;
+        box-shadow: 
+            0 1px 3px rgba(0, 0, 0, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.06);
     }
     
     .stTextInput > div > div:focus-within {
-        border-color: #f59e0b;
-        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+        border-color: #2563eb;
+        box-shadow: 
+            0 0 0 3px rgba(37, 99, 235, 0.1),
+            0 1px 3px rgba(0, 0, 0, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.06);
     }
     
     .stTextInput input {
-        color: #e2e8f0 !important;
-        font-family: 'Inter', sans-serif !important;
-        font-size: 1rem !important;
+        color: #0f172a !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif !important;
+        font-size: 1.1rem !important;
+        background: transparent !important;
     }
     
-    /* Tech containers */
+    .stSelectbox label {
+        color: #374151 !important;
+        font-size: 1.1rem !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif !important;
+    }
+    
+    .stTextInput label {
+        color: #374151 !important;
+        font-size: 1.1rem !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif !important;
+    }
+    
+    /* Modern containers inspired by big tech */
     .tech-container {
-        background: rgba(255,255,255,0.1);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,255,255,0.2);
-        border-radius: 15px;
+        background: #ffffff;
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 12px;
         padding: 1.5rem;
         margin: 1rem 0;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        box-shadow: 
+            0 1px 3px rgba(0, 0, 0, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+    
+    /* Ensure proper light theme */
+    .stContainer, .block-container {
+        background: transparent !important;
+    }
+    
+    /* Fix text colors for light theme */
+    .stMarkdown, .stText {
+        background: transparent !important;
+        color: #374151 !important;
+    }
+    
+    /* Fix sidebar background */
+    .css-1lcbmhc {
+        background: #f8fafc !important;
+    }
+    
+    /* Ensure main content area uses light theme */
+    .css-1d391kg {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
     }
     
     /* Subtle animated background */
@@ -275,91 +377,61 @@ def main():
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         
         .main-header-container {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
-            padding: 3.5rem 2rem;
-            border-radius: 28px;
-            margin-bottom: 3rem;
-            box-shadow: 0 25px 60px rgba(79, 70, 229, 0.4), 0 0 0 1px rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: #ffffff;
+            padding: 2.5rem 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 
+                0 1px 3px rgba(0, 0, 0, 0.1),
+                0 1px 2px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(148, 163, 184, 0.2);
             position: relative;
-            overflow: hidden;
-        }
-        
-        .main-header-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-        }
-        
-        .main-header-container::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
-            animation: float-glow 8s ease-in-out infinite;
-        }
-        
-        @keyframes float-glow {
-            0%, 100% { transform: translateX(-50%) translateY(-50%) rotate(0deg); opacity: 0.5; }
-            50% { transform: translateX(-45%) translateY(-45%) rotate(1deg); opacity: 0.8; }
         }
         
         .main-header {
-            color: #1e293b;
-            font-family: 'Inter', sans-serif;
-            font-size: 3.2rem;
-            font-weight: 900;
+            color: #0f172a;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
             text-align: center;
             margin: 0;
-            text-shadow: 0 4px 20px rgba(255,255,255,0.3);
-            letter-spacing: 1px;
-            position: relative;
-            z-index: 2;
+            letter-spacing: -0.02em;
         }
         
         .main-subtitle {
-            color: rgba(30, 41, 59, 0.8);
-            font-family: 'Inter', sans-serif;
-            font-size: 1.2rem;
+            color: #64748b;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            font-size: 1.3rem;
             text-align: center;
-            margin-top: 1rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            position: relative;
-            z-index: 2;
-            line-height: 1.6;
+            margin-top: 0.5rem;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            line-height: 1.5;
         }
         
         .tech-badge {
             display: inline-block;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: #f8fafc;
-            padding: 0.7rem 1.4rem;
-            border-radius: 35px;
-            font-family: 'Inter', sans-serif;
+            background: #2563eb;
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
             font-size: 0.9rem;
-            font-weight: 700;
-            margin-top: 1.5rem;
-            box-shadow: 0 10px 30px rgba(30, 41, 59, 0.4);
-            position: relative;
-            z-index: 2;
-            border: 1px solid rgba(30, 41, 59, 0.3);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
+            font-weight: 500;
+            margin-top: 1rem;
+            box-shadow: 
+                0 1px 3px rgba(0, 0, 0, 0.1),
+                0 1px 2px rgba(0, 0, 0, 0.06);
+            letter-spacing: -0.01em;
+            transition: all 0.2s ease;
         }
         
         .tech-badge:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(30, 41, 59, 0.5);
-            background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+            background: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.15),
+                0 2px 4px rgba(0, 0, 0, 0.1);
         }
     </style>
     <div class="main-header-container">
@@ -381,57 +453,43 @@ def main():
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         
         .nav-container {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
-            padding: 2rem 1rem;
-            border-radius: 20px;
+            background: #ffffff;
+            padding: 1.5rem 1rem;
+            border-radius: 12px;
             margin: 0 -1rem 2rem -1rem;
-            box-shadow: 0 15px 35px rgba(79, 70, 229, 0.4), 0 5px 15px rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 
+                0 1px 3px rgba(0, 0, 0, 0.1),
+                0 1px 2px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(148, 163, 184, 0.2);
             position: relative;
-            overflow: hidden;
-        }
-        
-        .nav-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
         }
         
         .nav-title {
-            color: #1e293b;
-            font-family: 'Inter', sans-serif;
+            color: #0f172a;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
             font-size: 1.8rem;
-            font-weight: 900;
+            font-weight: 700;
             text-align: center;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 2px 10px rgba(255,255,255,0.2);
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
         }
         
         .stRadio > div {
-            background: rgba(30, 41, 59, 0.3);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            padding: 1.5rem;
-            border: 1px solid rgba(255,255,255,0.2);
+            background: transparent;
+            border-radius: 12px;
+            padding: 0.5rem;
+            border: none;
         }
         
         .stRadio > div > label {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 12px;
-            padding: 18px 22px;
-            margin: 8px 0;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #f8fafc;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin: 4px 0;
+            transition: all 0.2s ease;
             cursor: pointer;
-            backdrop-filter: blur(10px);
             position: relative;
-            overflow: hidden;
         }
         
         .stRadio > div > label::before {
@@ -441,7 +499,7 @@ def main():
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
             transition: left 0.6s;
         }
         
@@ -450,44 +508,40 @@ def main():
         }
         
         .stRadio > div > label:hover {
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(124, 58, 237, 0.2) 100%);
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
-            border-color: rgba(79, 70, 229, 0.4);
+            background: #f1f5f9;
+            box-shadow: 
+                0 1px 3px rgba(0, 0, 0, 0.1),
+                0 1px 2px rgba(0, 0, 0, 0.06);
+            border-color: rgba(59, 130, 246, 0.3);
         }
         
         .stRadio > div > label > div {
-            color: #e2e8f0 !important;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            font-size: 1.1rem;
-            letter-spacing: 0.5px;
+            color: #374151 !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            font-weight: 500;
+            font-size: 1.2rem;
+            letter-spacing: -0.01em;
         }
         
         .stRadio > div > label[data-checked="true"] {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            border-color: #f59e0b;
-            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4), 0 0 0 1px rgba(245, 158, 11, 0.3);
-            transform: translateY(-1px) scale(1.02);
+            background: #2563eb;
+            border-color: #2563eb;
+            box-shadow: 
+                0 1px 3px rgba(0, 0, 0, 0.1),
+                0 1px 2px rgba(0, 0, 0, 0.06);
         }
         
         .stRadio > div > label[data-checked="true"] > div {
-            color: #1e293b !important;
-            font-weight: 700;
-            font-size: 1.15rem;
+            color: #ffffff !important;
+            font-weight: 600;
+            font-size: 1.2rem;
         }
         
         .tech-accent {
-            height: 3px;
-            background: linear-gradient(90deg, #f59e0b 0%, #ec4899 50%, #f59e0b 100%);
-            border-radius: 3px;
+            height: 1px;
+            background: rgba(148, 163, 184, 0.3);
+            border-radius: 1px;
             margin: 1rem 0;
-            animation: pulse-accent 3s ease-in-out infinite;
-        }
-        
-        @keyframes pulse-accent {
-            0%, 100% { opacity: 0.7; transform: scaleX(1); }
-            50% { opacity: 1; transform: scaleX(1.1); }
         }
     </style>
     """, unsafe_allow_html=True)
@@ -941,8 +995,7 @@ def render_predictor_page():
                 
                 with col2:
                     tg_uncertainty = results.get('tg_std', 0)
-                    tg_kelvin = results.get('tg_mean', 0)
-                    tg_celsius = tg_kelvin - 273.15 if tg_kelvin else 0
+                    tg_celsius = results.get('tg_mean', 0)
                     tg_display = f"{tg_celsius:.1f}"
                     if tg_uncertainty > 0:
                         tg_display += f" ± {tg_uncertainty:.1f}"
@@ -1010,7 +1063,7 @@ def render_predictor_page():
                 else:
                     interpretation.append("⚠️ **High χ parameter**: Poor polymer-solvent compatibility")
                 
-                tg_val = results.get('tg_mean', 0) - 273.15  # Convert to Celsius
+                tg_val = results.get('tg_mean', 0)  # Already in Celsius
                 if tg_val < 0:  # Below 0°C
                     interpretation.append("❄️ **Low Tg**: Flexible polymer at room temperature")
                 elif tg_val < 100:  # Below 100°C
