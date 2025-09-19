@@ -28,6 +28,25 @@ try:
     from rdkit import Chem
     from rdkit.Chem import AllChem, Crippen, Descriptors
     RDKIT_AVAILABLE = True
+    
+    # Debug: Print RDKit version info
+    try:
+        from rdkit import __version__ as rdkit_version
+        print(f"RDKit version: {rdkit_version}")
+    except ImportError:
+        try:
+            from rdkit import rdBase
+            print(f"RDKit version: {rdBase.rdkitVersion}")
+        except:
+            print("RDKit version: Unknown")
+            
+    # Test Morgan API availability
+    try:
+        AllChem.GetMorganGenerator
+        print("✅ GetMorganGenerator available (newer API)")
+    except AttributeError:
+        print("⚠️ GetMorganGenerator not available, will use fallback API")
+        
 except ImportError:
     print("Warning: RDKit not available. Some functionality will be limited.")
     RDKIT_AVAILABLE = False
@@ -157,13 +176,14 @@ class PolymerPredictor:
             return np.zeros(n_bits, dtype=np.float32)
         
         # Use the older, more compatible Morgan fingerprint API
+        # Force cache refresh - updated 2025-09-19
         try:
-            # Try the newer API first
+            # Try the newer API first (RDKit 2023+)
             morgan_gen = AllChem.GetMorganGenerator(radius=radius, fpSize=n_bits)
             fingerprint = morgan_gen.GetFingerprint(mol)
             return np.array(fingerprint, dtype=np.float32)
         except AttributeError:
-            # Fall back to older API
+            # Fall back to older API (RDKit <2023) - more compatible with rdkit-pypi
             fingerprint = AllChem.GetMorganFingerprintAsBitVect(mol, radius=radius, nBits=n_bits)
             return np.array(fingerprint, dtype=np.float32)
     
@@ -396,5 +416,5 @@ class PolymerPredictor:
 
 @st.cache_resource
 def get_predictor():
-    """Get cached predictor instance"""
+    """Get cached predictor instance - version 2 with Morgan API fix"""
     return PolymerPredictor()
