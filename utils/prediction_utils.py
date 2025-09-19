@@ -155,9 +155,17 @@ class PolymerPredictor:
         mol = Chem.MolFromSmiles(smiles)
         if mol is None:
             return np.zeros(n_bits, dtype=np.float32)
-        morgan_gen = AllChem.GetMorganGenerator(radius=radius, fpSize=n_bits)
-        fingerprint = morgan_gen.GetFingerprint(mol)
-        return np.array(fingerprint, dtype=np.float32)
+        
+        # Use the older, more compatible Morgan fingerprint API
+        try:
+            # Try the newer API first
+            morgan_gen = AllChem.GetMorganGenerator(radius=radius, fpSize=n_bits)
+            fingerprint = morgan_gen.GetFingerprint(mol)
+            return np.array(fingerprint, dtype=np.float32)
+        except AttributeError:
+            # Fall back to older API
+            fingerprint = AllChem.GetMorganFingerprintAsBitVect(mol, radius=radius, nBits=n_bits)
+            return np.array(fingerprint, dtype=np.float32)
     
     def calculate_logp(self, smiles: str) -> float:
         """Calculate LogP using RDKit"""
