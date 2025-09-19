@@ -20,10 +20,17 @@ except ImportError as e:
 import torch
 import torch.nn as nn
 import pandas as pd
-from rdkit import Chem
-from rdkit.Chem import AllChem, Crippen, Descriptors
 import streamlit as st
 from typing import Dict, Optional, Tuple
+
+# Handle RDKit imports with fallback
+try:
+    from rdkit import Chem
+    from rdkit.Chem import AllChem, Crippen, Descriptors
+    RDKIT_AVAILABLE = True
+except ImportError:
+    print("Warning: RDKit not available. Some functionality will be limited.")
+    RDKIT_AVAILABLE = False
 
 # Import SA scorer
 def calculateScore(mol):
@@ -131,6 +138,9 @@ class PolymerPredictor:
     
     def canonical_smiles(self, smiles: str) -> str:
         """Convert SMILES to canonical form"""
+        if not RDKIT_AVAILABLE:
+            return smiles  # Return as-is if RDKit not available
+            
         mol = Chem.MolFromSmiles(smiles)
         if mol is not None:
             return Chem.MolToSmiles(mol)
@@ -139,6 +149,9 @@ class PolymerPredictor:
     
     def smiles_to_morgan(self, smiles: str, radius: int = 2, n_bits: int = 1024) -> np.ndarray:
         """Convert SMILES to Morgan fingerprint"""
+        if not RDKIT_AVAILABLE:
+            return np.zeros(n_bits, dtype=np.float32)  # Return zero vector if RDKit not available
+            
         mol = Chem.MolFromSmiles(smiles)
         if mol is None:
             return np.zeros(n_bits, dtype=np.float32)
@@ -148,6 +161,9 @@ class PolymerPredictor:
     
     def calculate_logp(self, smiles: str) -> float:
         """Calculate LogP using RDKit"""
+        if not RDKIT_AVAILABLE:
+            return 0.0  # Default value if RDKit not available
+            
         try:
             mol = Chem.MolFromSmiles(smiles)
             if mol is None:
@@ -158,6 +174,9 @@ class PolymerPredictor:
     
     def calculate_sa_score(self, smiles: str) -> float:
         """Calculate synthetic accessibility score"""
+        if not RDKIT_AVAILABLE:
+            return 3.5  # Default moderate complexity if RDKit not available
+            
         try:
             mol = Chem.MolFromSmiles(smiles)
             if mol is None:
@@ -172,11 +191,19 @@ class PolymerPredictor:
                 pass
             
             # Fallback: improved molecular complexity estimation
-            num_atoms = mol.GetNumAtoms()
-            num_rings = mol.GetRingInfo().NumRings()
-            num_rotatable = Descriptors.NumRotatableBonds(mol)
-            num_aromatic = len([atom for atom in mol.GetAtoms() if atom.GetIsAromatic()])
-            num_hetero = len([atom for atom in mol.GetAtoms() if atom.GetAtomicNum() not in [1, 6]])
+            if RDKIT_AVAILABLE and mol is not None:
+                num_atoms = mol.GetNumAtoms()
+                num_rings = mol.GetRingInfo().NumRings()
+                num_rotatable = Descriptors.NumRotatableBonds(mol)
+                num_aromatic = len([atom for atom in mol.GetAtoms() if atom.GetIsAromatic()])
+                num_hetero = len([atom for atom in mol.GetAtoms() if atom.GetAtomicNum() not in [1, 6]])
+            else:
+                # Default values if RDKit not available
+                num_atoms = 20
+                num_rings = 1
+                num_rotatable = 3
+                num_aromatic = 6
+                num_hetero = 2
             
             # Simplified and more conservative SA score calculation
             # Base score for simple molecules
